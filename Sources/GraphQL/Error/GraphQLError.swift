@@ -1,3 +1,8 @@
+public protocol GraphQLErrorInfo: Error {
+    var errorType: String { get }
+    var errorInfo: String { get }
+}
+
 /**
  * A GraphQLError describes an Error found during the parse, validate, or
  * execute phases of performing a GraphQL operation. In addition to a message
@@ -9,6 +14,8 @@ public struct GraphQLError : Error, Codable {
         case message
         case locations
         case path
+        case errorType
+        case errorInfo
     }
 
     /**
@@ -37,6 +44,9 @@ public struct GraphQLError : Error, Codable {
      * Appears in the result of `description`.
      */
     public let path: IndexPath
+    
+    public var errorType: String?
+    public var errorInfo: String?
 
     /**
      * An array of GraphQL AST Nodes corresponding to this error.
@@ -92,6 +102,8 @@ public struct GraphQLError : Error, Codable {
 
         self.path = path
         self.originalError = originalError
+        self.errorType = (originalError as? GraphQLErrorInfo)?.errorType
+        self.errorInfo = (originalError as? GraphQLErrorInfo)?.errorInfo
     }
     
     public init(
