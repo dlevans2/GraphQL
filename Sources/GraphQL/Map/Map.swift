@@ -204,6 +204,27 @@ extension Map {
     }
 }
 
+// MARK: is<Type>
+
+extension Map {
+    public var typeDescription: String {
+        switch self {
+        case .null:
+            return "null"
+        case .bool:
+            return "bool"
+        case .number:
+            return "number"
+        case .string:
+            return "string"
+        case .array:
+            return "array"
+        case .dictionary:
+            return "dictionary"
+        }
+    }
+}
+
 // MARK: as<type>?
 
 extension Map {
@@ -585,6 +606,10 @@ extension Map : Codable {
         if container.decodeNil() {
             self = .null
         }
+
+        else if let bool = try? container.decode(Bool.self) {
+            self = .bool(bool)
+        }
             
         else if let double = try? container.decode(Double.self) {
             self = .number(Number(double))
@@ -680,7 +705,7 @@ extension Map : ExpressibleByNilLiteral {
 
 extension Map : ExpressibleByBooleanLiteral {
     public init(booleanLiteral value: BooleanLiteralType) {
-        self = .number(Number(value))
+        self = .bool(value)
     }
 }
 
