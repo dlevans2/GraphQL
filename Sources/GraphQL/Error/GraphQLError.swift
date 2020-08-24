@@ -1,6 +1,6 @@
 public protocol GraphQLErrorInfo: Error {
     var errorType: String { get }
-    var errorInfo: String { get }
+    var errorInfo: Map { get }
 }
 
 /**
@@ -46,7 +46,7 @@ public struct GraphQLError : Error, Codable {
     public let path: IndexPath
     
     public var errorType: String?
-    public var errorInfo: String?
+    public var errorInfo: Map?
 
     /**
      * An array of GraphQL AST Nodes corresponding to this error.
